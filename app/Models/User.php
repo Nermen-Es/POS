@@ -42,4 +42,16 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+
+    public function invoices(): HasMany
+    {
+        return $this->hasMany(Invoice::class, 'user_id', 'id');
+    }
+
+
+    public function partiallies(): HasMany
+    {
+        return $this->hasMany(Partially::class, 'user_id', 'id');
+    }
 }

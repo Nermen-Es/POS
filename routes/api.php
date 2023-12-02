@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\InvoiceController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\SupplierController;
+use App\Http\Controllers\Api\InvoicePartiallyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,20 +20,36 @@ use App\Http\Controllers\Api\SupplierController;
 
     //Product Routes
     Route::get('products' , [ProductController::class , 'index']);
+    Route::get('products/dropdownProduct',[ProductController::class , 'dropDownProduct']);
     Route::post('products' , [ProductController::class , 'store']);
     Route::post('products/{id}' , [ProductController::class , 'update']);
     Route::delete('products/{id}' , [ProductController::class , 'destroy']);
+      //search
+    Route::get('products/search/{term}', [ProductController::class, 'search']);
 
 
     //suppliers Routes
     Route::get('suppliers' , [SupplierController::class , 'index']);
+    Route::get('suppliers/dropDownSupplier',[SupplierController::class , 'dropDownSupplier']);
     Route::post('suppliers' , [SupplierController::class , 'store']);
     Route::post('suppliers/{id}' , [SupplierController::class , 'update']);
     Route::delete('suppliers/{id}' , [SupplierController::class , 'destroy']);
+     //search
+     Route::get('suppliers/search/{term}', [SupplierController::class, 'search']);
 
 
     //invoices Routes
-    Route::get('invoices' , [InvoiceController::class , 'index']);
+    Route::get('invoices' , [InvoiceController::class , 'index'])->middleware('changeStatus');
     Route::post('invoices' , [InvoiceController::class , 'store']);
-    Route::post('invoices/{id}' , [InvoiceController::class , 'update']);
+    Route::put('invoices/{id}' , [InvoiceController::class , 'update']);
     Route::delete('invoices/{id}' , [InvoiceController::class , 'destroy']);
+    //search
+    Route::get('invoices/search/{term}', [InvoiceController::class, 'search']);
+    //search in details
+    Route::get('invoices/search/details/{term}', [InvoiceController::class, 'searchInDetails']);
+
+    //invoices Partially
+    Route::get('invoice_Partiallies/{id}' , [InvoicePartiallyController::class , 'index']);
+    Route::post('invoice_Partiallies/create/{id}' , [InvoicePartiallyController::class , 'store']);
+    Route::put('invoice_Partiallies/edit/{id}' , [InvoicePartiallyController::class , 'update']);
+    Route::delete('invoice_Partiallies/delete/{id}' , [InvoicePartiallyController::class , 'destroy']);

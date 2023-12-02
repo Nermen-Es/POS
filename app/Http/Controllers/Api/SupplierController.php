@@ -91,5 +91,28 @@ class SupplierController extends Controller
     }
 
 
+    public function dropDownSupplier(){
+        try{
+            $suppliers = Spplier::pluck('name', 'id');
+
+            return $this->apiResponse($suppliers , 'Success' , 200);
+
+        }catch(\Throwable $th) {
+            return $this->errorResponse($th);
+        }
+    }
+
+
+    //search
+    public function search($term)
+
+    {
+        $suppliers = Spplier::search($term)->get();
+        if (count($suppliers)) {
+            return $this->apiResponse($suppliers, 'ok', 200);
+        } else {
+            return $this->apiResponse(null, 'There is no supplier like ' . $term, 404);
+        }
+    }
 
 }

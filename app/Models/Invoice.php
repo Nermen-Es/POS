@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 
 class Invoice extends Model
@@ -17,7 +18,7 @@ class Invoice extends Model
         'spplier_id',
         'invoice_number',
         'invoice_date',
-        'total_price',
+        'total_amount',
         'paid_amount',
         'remaining_amount',
         'status',
@@ -32,7 +33,7 @@ class Invoice extends Model
 
     public function suppliers(): HasMany
     {
-        return $this->hasMany(Spplier::class, 'id', 'Supplier_id');
+        return $this->hasMany(Spplier::class, 'id', 'spplier_id');
     }
 
 
@@ -40,4 +41,28 @@ class Invoice extends Model
     {
         return $this->hasMany(InvoiceDetail::class, 'invoice_id', 'id');
     }
+
+
+    public function partialies(): HasMany
+    {
+        return $this->hasMany(Partially::class,'invoice_id', 'id');
+    }
+
+    protected $searchable = [
+        'invoice_number',
+        'invoice_date',
+        'status'
+    ];
+
+    public function scopeSearch(Builder $builder , string $term){
+
+
+        foreach ($this->searchable as $searchable){
+            $builder->orWhere($searchable , 'like' , "%$term%");
+        }
+
+        return $builder;
+    }
+
+
 }

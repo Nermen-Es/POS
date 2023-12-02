@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('invoice_details', function (Blueprint $table) {
+        Schema::create('partiallies', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('invoice_id')->constrained('invoices')->onDelete('cascade')->onUpdate('cascade');
-            $table->string('product');
-            $table->decimal('price',8,2);
-            $table->decimal('quantity',8,2);
-            $table->decimal('sub_total');
+            $table->string('supplier_name');
+            $table->decimal('paid_amount',8,2);
+            $table->decimal('remaining_amount',8,2);
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('invoice_details');
+        Schema::dropIfExists('partiallies');
     }
 };

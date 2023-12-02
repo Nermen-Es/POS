@@ -93,5 +93,32 @@ class ProductController extends Controller
 
     }
 
+    public function dropDownProduct(){
+
+        try{
+
+            $products = Product::pluck('name', 'id');
+
+            return $this->apiResponse($products, 'Success' , 200);
+
+        }catch(\Throwable $th) {
+            return $this->errorResponse($th);
+        }
+
+    }
+
+
+    //search
+    public function search($term)
+    {
+
+        $Products = Product::search($term)->get();
+        if (count($Products)) {
+            return $this->apiResponse($Products, 'ok', 200);
+        } else {
+            return $this->apiResponse(null, 'There is no product  like ' . $term, 404);
+        }
+    }
+
 
 }

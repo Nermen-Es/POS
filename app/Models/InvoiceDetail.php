@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class InvoiceDetail extends Model
 {
@@ -21,4 +22,21 @@ class InvoiceDetail extends Model
     {
         return $this->belongsTo(Invoice::class);
     }
+
+    protected $searchable = [
+        'product',
+        'price',
+        'sub_total',
+    ];
+
+    public function scopeSearch(Builder $builder , string $term){
+
+
+        foreach ($this->searchable as $searchable){
+            $builder->orWhere($searchable , 'like' , "%$term%");
+        }
+
+        return $builder;
+    }
+
 }
