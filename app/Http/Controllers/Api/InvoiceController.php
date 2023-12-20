@@ -179,7 +179,7 @@ class InvoiceController extends Controller
 
            if ($invoice) {
                $invoice->delete();
-               return $this->apiResponse(null, 'the invoice deleted successfully', 200);
+               return $this->apiResponse(null, 'the invoice deleted successfully number '.$id, 200);
            }
 
            return $this->apiResponse(null, 'the invoice not found', 404);

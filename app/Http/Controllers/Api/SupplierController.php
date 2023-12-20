@@ -79,7 +79,7 @@ class SupplierController extends Controller
         if ($Supplier) {
 
             $Supplier->delete();
-            return $this->apiResponse( "" ,'Supplier deleted successfully' , 200);
+            return $this->apiResponse( "" ,'Supplier deleted successfully number '.$id , 200);
             }else{
                 return $this->notFoundResponse();
             }

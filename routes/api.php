@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\InvoiceController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\SupplierController;
+use App\Http\Controllers\Api\SaleInvoiceController;
 use App\Http\Controllers\Api\InvoicePartiallyController;
 
 /*
@@ -53,3 +54,11 @@ use App\Http\Controllers\Api\InvoicePartiallyController;
     Route::post('invoice_Partiallies/create/{id}' , [InvoicePartiallyController::class , 'store']);
     Route::put('invoice_Partiallies/edit/{id}' , [InvoicePartiallyController::class , 'update']);
     Route::delete('invoice_Partiallies/delete/{id}' , [InvoicePartiallyController::class , 'destroy']);
+
+
+    //Sale_invoices
+    Route::get('sale_invoices' , [SaleInvoiceController::class , 'index']);
+    Route::get('sale_invoices/show/{id}' , [SaleInvoiceController::class , 'show']);
+    Route::post('sale_invoices/create' , [SaleInvoiceController::class , 'store']);
+    Route::put('sale_invoices/edit/{id}' , [SaleInvoiceController::class , 'update']);
+    Route::delete('sale_invoices/delete/{id}' , [SaleInvoiceController::class , 'destroy']);

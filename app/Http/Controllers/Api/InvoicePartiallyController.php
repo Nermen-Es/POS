@@ -134,7 +134,7 @@ class InvoicePartiallyController extends Controller
         try{
             $invoice_partially = Partially::findOrFail($id);
             $invoice_partially->delete();
-            return $this->apiResponse(null, 'the invoice partially deleted successfully', 200);
+            return $this->apiResponse(null, 'the invoice partially deleted successfully number '.$id , 200);
         }
         catch(\Throwable $th){
 

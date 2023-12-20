@@ -82,7 +82,7 @@ class ProductController extends Controller
         if ($product) {
 
             $product->delete();
-            return $this->apiResponse( "" ,'Product deleted successfully' , 200);
+            return $this->apiResponse( "" ,'Product deleted successfully number '.$id , 200);
             }else{
                 return $this->notFoundResponse();
             }

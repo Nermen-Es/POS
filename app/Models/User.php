@@ -54,4 +54,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Partially::class, 'user_id', 'id');
     }
+
+
+    public function sale_invoices(): HasMany
+    {
+        return $this->hasMany(Sales_invoices::class, 'user_id', 'id');
+    }
 }

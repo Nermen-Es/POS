@@ -34,6 +34,5 @@ class ChangeStatusInvoice
                 return $next($request);
             }//end else
     }//end forech
-
     }
 }
