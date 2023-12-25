@@ -17,11 +17,10 @@ class Spplier extends Model
     ];
 
 
-    public function invoice(): BelongsTo
+    public function invoices(): HasMany
     {
-        return $this->belongsTo(Invoice::class,'id','spplier_id');
+        return $this->hasMany(Invoice::class, 'spplier_id', 'id');
     }
-
     protected $searchable = [
         'name',
         'phone',

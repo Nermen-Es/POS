@@ -7,7 +7,7 @@ use App\Models\Spplier;
 use Illuminate\Http\Request;
 use App\Traits\ApiResponseTrait;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\SupplierResource;
+use App\Http\Resources\{SupplierResource,DrowpDownResource};
 
 class SupplierController extends Controller
 {
@@ -93,9 +93,9 @@ class SupplierController extends Controller
 
     public function dropDownSupplier(){
         try{
-            $suppliers = Spplier::pluck('name', 'id');
+            $suppliers = Spplier::all();
 
-            return $this->apiResponse($suppliers , 'Success' , 200);
+            return $this->apiResponse(DrowpDownResource::collection($suppliers) , 'Success' , 200);
 
         }catch(\Throwable $th) {
             return $this->errorResponse($th);
@@ -109,7 +109,7 @@ class SupplierController extends Controller
     {
         $suppliers = Spplier::search($term)->get();
         if (count($suppliers)) {
-            return $this->apiResponse($suppliers, 'ok', 200);
+            return $this->apiResponse(SupplierResource::collection($suppliers), 'ok', 200);
         } else {
             return $this->apiResponse(null, 'There is no supplier like ' . $term, 404);
         }

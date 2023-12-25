@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 
@@ -26,14 +27,19 @@ class Invoice extends Model
     ];
 
 
-    public function users(): HasMany
+    /**
+     * Get the user that owns the Sales_invoices
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user(): BelongsTo
     {
-        return $this->hasMany(User::class, 'id', 'user_id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    public function suppliers(): HasMany
+    public function supplier(): BelongsTo
     {
-        return $this->hasMany(Spplier::class, 'id', 'spplier_id');
+        return $this->belongsTo(Spplier::class, 'spplier_id', 'id');
     }
 
 

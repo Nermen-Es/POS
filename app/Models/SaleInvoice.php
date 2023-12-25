@@ -16,11 +16,7 @@ class SaleInvoice extends Model
         'note'
     ];
 
-/**
- * Get the user that owns the Sales_invoices
- *
- * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
- */
+
 public function user(): BelongsTo
 {
     return $this->belongsTo(User::class, 'user_id', 'id');
@@ -28,5 +24,7 @@ public function user(): BelongsTo
 
 protected $casts = [
     'start_day_date' => 'date',
+    'created_at' => 'date',
+    'updated_at' => 'date'
 ];
 }

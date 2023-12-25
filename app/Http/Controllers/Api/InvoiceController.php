@@ -191,7 +191,7 @@ class InvoiceController extends Controller
     {
         $invoices = Invoice::search($term)->get();
         if (count($invoices)) {
-            return $this->apiResponse($invoices, 'ok', 200);
+            return $this->apiResponse(InvoiceResource::collection($invoices), 'ok', 200);
         } else {
             return $this->apiResponse(null, 'There is no invoice like ' . $term, 404);
         }

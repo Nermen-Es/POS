@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class SaleInvoiceResource extends JsonResource
+class DrowpDownResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,12 +16,7 @@ class SaleInvoiceResource extends JsonResource
     {
         return [
             'id'  => $this->id,
-            'user_name'  => $this->user_id,
-            'start_day_date'=> $this->start_day_date,
-            'total_amount' => $this->total_amount,
-            'note'=> $this->note,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'name' => $this->name,
         ];
     }
 }

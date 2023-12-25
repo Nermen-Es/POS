@@ -6,7 +6,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Traits\ApiResponseTrait;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\ProductResource;
+use App\Http\Resources\{ProductResource,DrowpDownResource};
 use Validator;
 
 class ProductController extends Controller
@@ -97,9 +97,9 @@ class ProductController extends Controller
 
         try{
 
-            $products = Product::pluck('name', 'id');
+            $products = Product::all();
 
-            return $this->apiResponse($products, 'Success' , 200);
+            return $this->apiResponse(DrowpDownResource::collection($products), 'Success' , 200);
 
         }catch(\Throwable $th) {
             return $this->errorResponse($th);
@@ -114,7 +114,7 @@ class ProductController extends Controller
 
         $Products = Product::search($term)->get();
         if (count($Products)) {
-            return $this->apiResponse($Products, 'ok', 200);
+            return $this->apiResponse(ProductResource::collection($Products), 'ok', 200);
         } else {
             return $this->apiResponse(null, 'There is no product  like ' . $term, 404);
         }
