@@ -20,7 +20,7 @@ return new class extends Migration
             $table->decimal('total_amount');
             $table->decimal('paid_amount')->nullable();
             $table->decimal('remaining_amount')->default(0);
-            $table->enum('status', ['Paid','Partially'])->nullable();
+            $table->enum('status', ['unPaid','Paid','Partially'])->nullable();
             $table->text('note')->nullable();
             $table->timestamps();
         });

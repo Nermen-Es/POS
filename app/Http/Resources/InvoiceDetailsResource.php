@@ -16,10 +16,10 @@ class InvoiceDetailsResource extends JsonResource
     {
         return [
             'id'  => $this->id,
-            'Product' => $this->product,
-            'Price' => $this->price,
-            'Quantity' => $this->quantity,
-            'Sub_Total' =>  $this->sub_total,
+            'product' => $this->product,
+            'price' => $this->price,
+            'quantity' => $this->quantity,
+            'sub_total' =>  $this->sub_total,
         ];
     }
 }

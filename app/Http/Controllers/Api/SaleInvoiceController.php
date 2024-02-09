@@ -50,8 +50,8 @@ class SaleInvoiceController extends Controller
              ]);
 
              $sale_invoices = SaleInvoice::create([
-              // 'user_id' => Auth::guard('api')->user()->id,
-                 'user_id' => $input_invoice['user_id'],
+                 'user_id' => Auth::guard('api')->user()->id,
+                 //'user_id' => $input_invoice['user_id'],
                  'start_day_date' => $input_invoice['start_day_date'],
                  'total_amount' => $input_invoice['total_amount'],
                  'note' => $input_invoice['note'],

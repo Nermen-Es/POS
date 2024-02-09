@@ -4,12 +4,13 @@ namespace App\Http\Controllers\Api;
 
 use Validator;
 use Carbon\Carbon;
-use App\Models\{Invoice,InvoiceDetail};
 use Illuminate\Http\Request;
 use App\Traits\ApiResponseTrait;
 use App\Http\Controllers\Controller;
 use App\Services\OrderDetailService;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\InvoiceResource;
+use App\Models\{Invoice,InvoiceDetail};
 
 
 class InvoiceController extends Controller
@@ -21,10 +22,25 @@ class InvoiceController extends Controller
         $this->OrderDetailService = $OrderDetailService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $invoices = Invoice::with(['invoice_details'])->get();
-        return $this->apiResponse(InvoiceResource::collection($invoices), 'Success' , 200);
+        $rules = [
+            'status' => 'in:unPaid,Paid,Partially'
+        ];
+
+        $validator = Validator::make($request->query(), $rules);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => $validator->errors()->all(),
+            ], 422);
+        }
+        $invoices = Invoice::query();
+       // $invoices = Invoice::with(['invoice_details'])->get();
+       if($request->status){
+        $invoices = $invoices->where('status',$request->status);
+       }
+        return $this->apiResponse(InvoiceResource::collection($invoices->with(['invoice_details'])->get()), 'Success' , 200);
     }
 
 
@@ -58,22 +74,27 @@ class InvoiceController extends Controller
                    'paid_amount'  => 'required|numeric|min:0|lte:total_amount',
                    'remaining_amount' => 'required|numeric|min:0|lte:total_amount',
                    'note' => 'nullable|string',
-                   'status' => 'nullable|in:Paid,Partially',
+                   'status' => 'nullable|in:unPaid,Paid,Partially',
                ]);
 
                if ($validator->fails()) {
                    return response()->json($validator->errors(), 400);
                }
+
                //change status dynamic
                if($input_invoice['remaining_amount'] == 0){
                 $status = "Paid";
-               }else{
+               }elseif($input_invoice['paid_amount'] == 0){
+                $status = "unPaid";
+               }
+               else{
                 $status = "Partially";
                }
 
+
                $invoice = Invoice::create([
-                // 'user_id' => Auth::guard('api')->user()->id,
-                   'user_id' => $input_invoice['user_id'],
+                  'user_id' => Auth::guard('api')->user()->id,
+                //    'user_id' => $input_invoice['user_id'],
                    'spplier_id' => $input_invoice['spplier_id'],
                    'invoice_number' => $input_invoice['invoice_number'],
                    'invoice_date' => Carbon::now()->format('Y-m-d'),
@@ -123,12 +144,14 @@ class InvoiceController extends Controller
                 'paid_amount'  => 'nullable|numeric|min:0|lte:total_amount',
                 'remaining_amount' => 'nullable|numeric|min:0|lte:total_amount',
                 'note' => 'nullable|string',
-                'status' => 'nullable|in:Paid,Partially',
+                'status' => 'nullable|in:unPaid,Paid,Partially',
             ]);
 
             //change status dynamic
             if($input_invoice['remaining_amount'] == 0){
             $status = "Paid";
+            }elseif($input_invoice['paid_amount'] == 0){
+                $status = "unPaid";
             }else{
             $status = "Partially";
             }
@@ -137,8 +160,8 @@ class InvoiceController extends Controller
                 return response()->json($validator->errors(), 400);
             }
             $invoice->update([
-                 // 'user_id' => Auth::guard('api')->user()->id,
-                'user_id' => $input_invoice['user_id'],
+                'user_id' => Auth::guard('api')->user()->id,
+                // 'user_id' => $input_invoice['user_id'],
                 'spplier_id' => $input_invoice['spplier_id'],
                 'invoice_number' => $input_invoice['invoice_number'],
                 'invoice_date' => Carbon::now()->format('Y-m-d'),

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Traits\ApiResponseTrait;
 use App\Models\{Partially,Invoice};
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\{InvoicePartially,InvoiceResource};
 
 
@@ -52,10 +53,9 @@ class InvoicePartiallyController extends Controller
 
 
             $invoice_partially = Partially::create([
-                // 'user_id' => Auth::guard('api')->user()->id,
-                   'user_id'=> $request->user_id,
+                   'user_id' => Auth::guard('api')->user()->id,
                    'invoice_id' => $id,
-                   'supplier_name' => $invoice->suppliers->first()->name,
+                   'supplier_name' => $invoice->supplier->first()->name,
                    'paid_amount' => $request->paid_amount,
                    'remaining_amount' => $request->remaining_amount,
 
@@ -100,10 +100,9 @@ class InvoicePartiallyController extends Controller
 
 
             $invoice_partially->update([
-                // 'user_id' => Auth::guard('api')->user()->id,
-                   'user_id'=> $request->user_id,
+                   'user_id' => Auth::guard('api')->user()->id,
                    'invoice_id' =>  $invoice->id,
-                   'supplier_name' => $invoice->suppliers->first()->name,
+                   'supplier_name' => $invoice->supplier->first()->name,
                    'paid_amount' => $request->paid_amount,
                    'remaining_amount' => $request->remaining_amount,
 

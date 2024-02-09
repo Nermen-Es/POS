@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Api\InvoiceController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\SupplierController;
@@ -19,6 +20,16 @@ use App\Http\Controllers\Api\InvoicePartiallyController;
 |
 */
 
+    //Auth
+
+        Route::post('/login',[AuthController::class , 'login']);
+        Route::post('/logout', [AuthController::class , 'logout']);
+        Route::post('/changePassword', [AuthController::class , 'changePassword']);
+
+
+
+Route::group([ 'middleware' => 'auth:api'],
+    function() {
     //Product Routes
     Route::get('products' , [ProductController::class , 'index']);
     Route::get('products/dropdownProduct',[ProductController::class , 'dropDownProduct']);
@@ -62,3 +73,4 @@ use App\Http\Controllers\Api\InvoicePartiallyController;
     Route::post('sale_invoices/create' , [SaleInvoiceController::class , 'store']);
     Route::put('sale_invoices/edit/{id}' , [SaleInvoiceController::class , 'update']);
     Route::delete('sale_invoices/delete/{id}' , [SaleInvoiceController::class , 'destroy']);
+});
