@@ -25,7 +25,8 @@ use App\Http\Controllers\Api\InvoicePartiallyController;
         Route::post('/login',[AuthController::class , 'login']);
         Route::post('/logout', [AuthController::class , 'logout']);
         Route::post('/changePassword', [AuthController::class , 'changePassword']);
-
+        Route::post('/verify_user_email', [AuthController::class , 'verifyUserEmail']);
+        Route::post('/resend_email_verification_link', [AuthController::class , 'resendEmailVerificationLink']);
 
 
 Route::group([ 'middleware' => 'auth:api'],
