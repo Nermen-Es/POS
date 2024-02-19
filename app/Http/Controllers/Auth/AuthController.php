@@ -5,13 +5,16 @@ namespace App\Http\Controllers\Auth;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ResendEmailVerificationRequest;
+use App\Http\Requests\VerifyEmailRequest;
+use App\Services\EmailVerificationService;
 use Illuminate\Support\Facades\{Auth,Hash};
 
 class AuthController extends Controller
 {
-    public function __construct()
+    public function __construct(private EmailVerificationService $emailVerificationService)
     {
-        $this->middleware('auth:api', ['except' => ['login']]);
+        // $this->middleware('auth:api', ['except' => ['login']]);
     }
 
     public function login(Request $request)
@@ -29,7 +32,9 @@ class AuthController extends Controller
             ], 401);
         }
 
+
         $user = Auth::user();
+        $this->emailVerificationService->sendVerificationLink($user);
         return response()->json([
             'user' => $user,
             'authorization' => [
@@ -37,6 +42,21 @@ class AuthController extends Controller
                 'type' => 'bearer',
             ]
         ]);
+    }
+
+    /**
+     * Resend verification link
+     */
+    public function resendEmailVerificationLink(ResendEmailVerificationRequest $request)
+    {
+        return $this->emailVerificationService->resendLink($request->email);
+    }
+
+    /**
+     * Verify user email
+     */
+    public function verifyUserEmail(VerifyEmailRequest $request) {
+        return $this->emailVerificationService->verifyEmail($request->email, $request->token);
     }
 
     //logut
